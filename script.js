@@ -1,21 +1,30 @@
-const tg = window.Telegram.WebApp;
+function navigateTo(url) {
+  window.location.href = url;
+}
 
-function addWater(amount) {
-    // Отправка данных на сервер
-    const userId = tg.initDataUnsafe.user.id;
-    fetch("https://yourdomain.com/update_water", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            user_id: userId,
-            water_amount: amount
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("current-intake").textContent = `${data.current_water} мл`;
-    })
-    .catch(error => console.error("Ошибка:", error));
+function calculateWater() {
+  const weight = document.getElementById('weight').value;
+  const activity = document.getElementById('activity').value;
+
+  if (!weight || !activity) {
+    alert('Пожалуйста, заполните все поля.');
+    return;
+  }
+
+  let waterIntake = weight * 30; // Расчет базовой нормы воды (мл на кг веса)
+
+  // Добавляем коррекцию по уровню активности
+  switch (activity) {
+    case 'low':
+      waterIntake *= 1.0;
+      break;
+    case 'medium':
+      waterIntake *= 1.2;
+      break;
+    case 'high':
+      waterIntake *= 1.4;
+      break;
+  }
+
+  alert(`Ваша норма воды: ${Math.round(waterIntake)} мл в день.`);
 }
