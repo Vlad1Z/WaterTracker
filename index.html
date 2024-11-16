@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Tracker</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <h1>Water Tracker</h1>
+    <p>Текущий уровень воды: <span id="currentWater">0</span> мл</p>
+    <button onclick="addWater(200)">Добавить 200 мл</button>
+    <button onclick="resetWater()">Сбросить</button>
+
+    <script>
+        // Telegram Web App
+        const tg = window.Telegram.WebApp;
+
+        // Функция для добавления воды
+        function addWater(amount) {
+            fetch("http://127.0.0.1:5000/update_water", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id: tg.initDataUnsafe.user.id,
+                    water_amount: amount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("currentWater").innerText = data.current_water;
+            });
+        }
+
+        // Функция для сброса воды
+        function resetWater() {
+            fetch("http://127.0.0.1:5000/reset_water", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id: tg.initDataUnsafe.user.id
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("currentWater").innerText = 0;
+            });
+        }
+
+        // Загрузка текущего уровня воды
+        function loadCurrentWater() {
+            fetch(`http://127.0.0.1:5000/get_water?user_id=${tg.initDataUnsafe.user.id}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    document.getElementById("currentWater").innerText = data.current_water;
+                }
+            });
+        }
+
+        // Инициализация
+        tg.ready();
+        loadCurrentWater();
+    </script>
+</body>
+</html>
