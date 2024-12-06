@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Вопрос и ответы</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Tracker</title>
+    <style>
+        body {
+            transition: background-color 0.5s ease;
+        }
+    </style>
 </head>
 <body>
-    <h1>Решите задачу:</h1>
-    <p>Сколько будет 2 + 2?</p>
-    <button onclick="sendData(1)">1</button>
-    <button onclick="sendData(2)">2</button>
-    <button onclick="sendData(3)">3</button>
-    <button onclick="sendData(4)">4</button>
+    <h1>Water Tracker</h1>
+    <p>Здесь будет информация о вашем здоровье и воде.</p>
 
     <script>
-        function sendData(buttonValue) {
-            const tg = window.Telegram.WebApp;
-            // Отправляем данные как строку в JSON формате
-            tg.sendData(JSON.stringify({ button: buttonValue }));
-        }
+        window.onload = function () {
+            // Получаем параметры из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const data = JSON.parse(urlParams.get('data'));  // Декодируем данные из JSON
 
-        window.Telegram.WebApp.ready();
+            // Проверяем наличие данных и изменяем фон
+            if (data && data.background_color) {
+                document.body.style.backgroundColor = data.background_color;
+            }
+        };
     </script>
 </body>
 </html>
