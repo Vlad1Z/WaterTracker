@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web App</title>
+    <title>Выбор ответа</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <h1>Выберите кнопку</h1>
-    <button onclick="sendData(1)">Кнопка 1</button>
-    <button onclick="sendData(2)">Кнопка 2</button>
-    <button onclick="sendData(3)">Кнопка 3</button>
-    <button onclick="sendData(4)">Кнопка 4</button>
-    <button onclick="sendData(5)">Кнопка 5</button>
+    <h1>Решите задачу:</h1>
+    <p>Сколько будет 2 + 3?</p>
+    <button onclick="sendAnswer(1)">1</button>
+    <button onclick="sendAnswer(2)">2</button>
+    <button onclick="sendAnswer(3)">3</button>
+    <button onclick="sendAnswer(4)">4</button>
+    <button onclick="sendAnswer(5)">5</button>
 
     <script>
-        // Функция отправки данных в бота
-        function sendData(buttonValue) {
-            const tg = window.Telegram.WebApp;
-            tg.sendData(JSON.stringify({ button: buttonValue })); // Отправляем значение кнопки
+        function sendAnswer(answer) {
+            if (Telegram.WebApp) {
+                console.log("Отправка ответа:", answer);  // Сообщение в консоли для диагностики
+                Telegram.WebApp.sendData(answer);  // Отправка выбранного ответа обратно в бота
+            } else {
+                console.error("Telegram Web App API не найден.");
+            }
         }
 
         // Инициализация Telegram WebApp
