@@ -28,22 +28,22 @@
 
     <script>
         document.getElementById("generate-btn").onclick = function() {
-            // Отправляем запрос в Telegram-бот
+            // Отправляем команду /generate в Telegram-бота
             fetch('https://api.telegram.org/bot6667181660:AAH6GIw3845oKKxvkAbw7PlQWppSOfWHiM0/sendMessage', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    chat_id: 'YOUR_CHAT_ID',  // Замените на ваш chat_id
+                    chat_id: 'YOUR_CHAT_ID',  // Замените на свой chat_id
                     text: '/generate'
                 })
             })
             .then(response => response.json())
             .then(data => {
-                // Здесь можно обработать сообщение и отобразить число
-                // В реальной ситуации вы бы использовали веб-сокеты или другое решение для получения данных от бота
-                document.getElementById("random-number").innerText = `Generated number: ${data.result.text}`;
+                // Получаем сообщение от бота и отображаем число
+                const generatedNumber = data.result.text.split(":")[1].trim(); // Получаем число из текста
+                document.getElementById("random-number").innerText = `Generated number: ${generatedNumber}`;
             })
             .catch(error => console.error('Error:', error));
         };
