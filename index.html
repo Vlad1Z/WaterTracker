@@ -3,59 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Tracker</title>
+    <title>Random Number Generator</title>
     <style>
         body {
-            transition: background-color 0.5s ease;
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 100px;
+            padding: 50px;
         }
-        .buttons {
+        #random-number {
+            font-size: 24px;
             margin-top: 20px;
         }
-        .button {
+        button {
             padding: 10px 20px;
-            font-size: 18px;
-            margin: 10px;
+            font-size: 16px;
             cursor: pointer;
-            border: none;
-            border-radius: 5px;
-        }
-        .button:hover {
-            background-color: #ddd;
         }
     </style>
 </head>
 <body>
-    <h1>Ответьте на выражение: 2 + 2 = ?</h1>
-    <div class="buttons">
-        <button class="button" onclick="submitAnswer(3)">3</button>
-        <button class="button" onclick="submitAnswer(4)">4</button>
-        <button class="button" onclick="submitAnswer(5)">5</button>
-    </div>
+    <h1>Random Number Generator</h1>
+    <button id="generate-btn">Generate Number</button>
+    <div id="random-number">Press the button to generate a number!</div>
 
     <script>
-        function submitAnswer(answer) {
-            // Отправляем ответ на сервер (или используем JSON через URL)
-            const data = { answer: answer };
-            const urlParams = new URLSearchParams(data);
-            window.location.href = 'https://vlad1z.github.io/WaterTracker/index.html?' + urlParams.toString();
-        }
-
-        window.onload = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const answer = parseInt(urlParams.get('answer')); // Читаем ответ из URL
-
-            if (answer) {
-                if (answer === 4) {
-                    document.body.style.backgroundColor = 'green'; // Правильный ответ
-                    alert("Правильный ответ! Фон меняется на зелёный.");
-                } else {
-                    document.body.style.backgroundColor = 'red'; // Неправильный ответ
-                    alert("Неверный ответ! Фон меняется на красный.");
-                }
-            }
+        document.getElementById("generate-btn").onclick = function() {
+            fetch('/generate')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("random-number").innerText = `Generated number: ${data.number}`;
+                })
+                .catch(error => console.error('Error:', error));
         };
     </script>
 </body>
