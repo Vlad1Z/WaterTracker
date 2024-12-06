@@ -10,7 +10,7 @@
             text-align: center;
             padding: 50px;
         }
-        #random-number {
+        #result {
             font-size: 24px;
             margin-top: 20px;
         }
@@ -22,30 +22,18 @@
     </style>
 </head>
 <body>
-    <h1>Random Number Generator</h1>
-    <button id="generate-btn">Generate Number</button>
-    <div id="random-number">Press the button to generate a number!</div>
+    <h1>Генератор случайного числа</h1>
+    <button id="generate-btn">Сгенерировать число</button>
+    <div id="result">Нажмите кнопку, чтобы сгенерировать число!</div>
 
     <script>
         document.getElementById("generate-btn").onclick = function() {
-            // Отправляем команду /generate в Telegram-бота
-            fetch('https://api.telegram.org/bot6667181660:AAH6GIw3845oKKxvkAbw7PlQWppSOfWHiM0/sendMessage', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: 'YOUR_CHAT_ID',  // Замените на свой chat_id
-                    text: '/generate'
-                })
-            })
-            .then(response => response.json())
+            fetch('/generate')
+            .then(response => response.text())
             .then(data => {
-                // Получаем сообщение от бота и отображаем число
-                const generatedNumber = data.result.text.split(":")[1].trim(); // Получаем число из текста
-                document.getElementById("random-number").innerText = `Generated number: ${generatedNumber}`;
+                document.getElementById("result").innerText = data;
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => console.error('Ошибка:', error));
         };
     </script>
 </body>
