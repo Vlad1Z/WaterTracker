@@ -7,22 +7,54 @@
     <style>
         body {
             transition: background-color 0.5s ease;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
 <body>
-    <h1>Water Tracker</h1>
-    <p>Здесь будет информация о вашем здоровье и воде.</p>
+    <h1>Ответьте на выражение: 2 + 2 = ?</h1>
+    <div class="buttons">
+        <button class="button" onclick="submitAnswer(3)">3</button>
+        <button class="button" onclick="submitAnswer(4)">4</button>
+        <button class="button" onclick="submitAnswer(5)">5</button>
+    </div>
 
     <script>
-        window.onload = function () {
-            // Получаем параметры из URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const data = JSON.parse(urlParams.get('data'));  // Декодируем данные из JSON
+        function submitAnswer(answer) {
+            // Отправляем ответ на сервер (или используем JSON через URL)
+            const data = { answer: answer };
+            const urlParams = new URLSearchParams(data);
+            window.location.href = 'https://vlad1z.github.io/WaterTracker/index.html?' + urlParams.toString();
+        }
 
-            // Проверяем наличие данных и изменяем фон
-            if (data && data.background_color) {
-                document.body.style.backgroundColor = data.background_color;
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const answer = parseInt(urlParams.get('answer')); // Читаем ответ из URL
+
+            if (answer) {
+                if (answer === 4) {
+                    document.body.style.backgroundColor = 'green'; // Правильный ответ
+                    alert("Правильный ответ! Фон меняется на зелёный.");
+                } else {
+                    document.body.style.backgroundColor = 'red'; // Неправильный ответ
+                    alert("Неверный ответ! Фон меняется на красный.");
+                }
             }
         };
     </script>
