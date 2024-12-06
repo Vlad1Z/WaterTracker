@@ -2,29 +2,24 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Выбор ответа</title>
+    <title>Вопрос и ответы</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <h1>Решите задачу:</h1>
-    <p>Сколько будет 2 + 3?</p>
-    <button onclick="sendAnswer(1)">1</button>
-    <button onclick="sendAnswer(2)">2</button>
-    <button onclick="sendAnswer(3)">3</button>
-    <button onclick="sendAnswer(4)">4</button>
-    <button onclick="sendAnswer(5)">5</button>
+    <p>Сколько будет 2 + 2?</p>
+    <button onclick="sendData(1)">1</button>
+    <button onclick="sendData(2)">2</button>
+    <button onclick="sendData(3)">3</button>
+    <button onclick="sendData(4)">4</button>
 
     <script>
-        function sendAnswer(answer) {
-            if (Telegram.WebApp) {
-                console.log("Отправка ответа:", answer);  // Сообщение в консоли для диагностики
-                Telegram.WebApp.sendData(answer);  // Отправка выбранного ответа обратно в бота
-            } else {
-                console.error("Telegram Web App API не найден.");
-            }
+        function sendData(buttonValue) {
+            const tg = window.Telegram.WebApp;
+            // Отправляем данные как строку в JSON формате
+            tg.sendData(JSON.stringify({ button: buttonValue }));
         }
 
-        // Инициализация Telegram WebApp
         window.Telegram.WebApp.ready();
     </script>
 </body>
